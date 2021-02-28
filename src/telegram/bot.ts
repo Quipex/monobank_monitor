@@ -8,6 +8,12 @@ import { clientInfo, searchStatement } from '../monobank/monobank'
 
 const MAX_MESSAGE_LENGTH = 4000;
 
+const handleError = (err: any, ctx: Context) => {
+    const message = err.message;
+    const url = err.config?.url;
+    ctx.reply(`Got error:\n${JSON.stringify({ message, url }, null, 2)}`);
+}
+
 const authUser = async (ctx: Context, next: () => Promise<void>) => {
     const chatId = ctx.chat.id;
     logger.info(`${chatId} -> bot: '${ctx.message.text}'`);
@@ -23,6 +29,7 @@ const sendClientInfo = (ctx: Context) => {
     clientInfo().then(resp => {
         ctx.reply(infoToString(resp.data))
     })
+        .catch(ex => handleError(ex, ctx))
 }
 
 const handleStatements = (resp: AxiosResponse<Statement[]>, ctx: Context) => {
@@ -50,6 +57,7 @@ const sendOperations = (ctx: Context) => {
     const parts = ctx.message.text.split(' ');
     searchStatement(parts[1], parts[2], parts[3])
         .then(resp => handleStatements(resp, ctx))
+        .catch(ex => handleError(ex, ctx))
 }
 
 const launchBot = () => {
@@ -59,7 +67,7 @@ const launchBot = () => {
     bot.start(ctx => ctx.reply('Welcome!'));
     bot.command('/info', sendClientInfo);
     bot.command('/operations', sendOperations);
-    bot.catch((err: Error, ctx: Context) => ctx.reply(`Got error ${err.message}`))
+    bot.catch(handleError);
     bot.launch();
     return bot;
 }
