@@ -4,10 +4,10 @@ import express from "express";
 import { sendMessage } from "../telegram/bot";
 import logger from "../logging/logger";
 import { errorHandler, successHandler } from '../logging/morgan';
+import { env } from '../../env';
 
 export const launchServer = () => {
     const app = express();
-    const port = 20112;
     app.use(bodyParser.json());
     app.use(successHandler);
     app.use(errorHandler);
@@ -19,7 +19,7 @@ export const launchServer = () => {
         res.sendStatus(200);
     })
     
-    app.listen(port, () => {
-        logger.info(`App is listening on port ${port}`)
+    app.listen(env.app.port, () => {
+        logger.info(`App is listening on port ${env.app.port}`)
     })
 }
