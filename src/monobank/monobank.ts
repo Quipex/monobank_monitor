@@ -21,6 +21,5 @@ const toUnix = (date: string) => (new Date(date).getTime() / 1000).toString()
 export function searchStatement(account: string, from: string, to?: string): AxiosPromise<Statement[]> {
     const _from = toUnix(from);
     const _to = to ? toUnix(to) : '';
-    const a = ENDPOINTS.PERSONAL_STATEMENT(account, _from, _to);
-    return call(a)
+    return call(ENDPOINTS.PERSONAL_STATEMENT(account, _from, _to))
 }
