@@ -1,4 +1,4 @@
-import moment from "moment";
+import moment from "moment-timezone";
 import { currency, toPrice as _toPrice } from "../../utils/money.helper";
 
 export interface Statement {
