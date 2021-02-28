@@ -1,5 +1,5 @@
+import moment from "moment";
 import { launchServer } from "./src/server/server";
-import { launchBot } from "./src/telegram/bot";
 
+moment.locale('ru');
 launchServer();
-launchBot();
