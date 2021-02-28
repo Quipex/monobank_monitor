@@ -18,9 +18,10 @@ const authUser = async (ctx: Context, next: () => Promise<void>) => {
     const chatId = ctx.chat.id;
     logger.info(`${chatId} -> bot: '${ctx.message.text}'`);
     if (env.app.telegram_receiver_ids.find(id => id === chatId.toString())) {
+        logger.info(`bot -> ${chatId}`);
         await next();
     } else {
-        logger.warn(`Rejected ${chatId}: ${ctx.message.text}`)
+        logger.warn(`Rejected ${chatId}: ${ctx.message.text}`);
         ctx.reply('You\'re not whitelisted');
     }
 }
