@@ -9,5 +9,5 @@ export interface WebhookEvent {
 }
 
 export const eventToString = ({ data: { account, statementItem } }: WebhookEvent) => (
-    `Карта '${account}'\n${statementToString(statementItem)}`
+    `${statementToString(statementItem)}\nКарта '${account}'`
 )

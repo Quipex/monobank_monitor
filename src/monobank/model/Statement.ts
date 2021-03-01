@@ -28,12 +28,13 @@ export const statementToString = (
     const operationSymbol = amount > 0 ? '🟢' : '🔴';
     const toPrice = _price(currency(currencyCode));
     const operation = amount === operationAmount
-        ? `${operationSymbol} ${toPrice(amount)} (баланс: ${toPrice(balance)})\n`
-        : `${operationSymbol} ${toPrice(amount)} (операция: ${toPrice(operationAmount)}) (баланс: ${toPrice(balance)})\n`;
-    let message = `${moment(new Date(time * 1000)).format('llll')}\n` + operation;
+        ? `${operationSymbol} ${toPrice(amount)} (баланс 🏦: ${toPrice(balance)})\n`
+        : `${operationSymbol} ${toPrice(amount)} (операция: ${toPrice(operationAmount)}) (баланс 🏦: ${toPrice(balance)})\n`;
+    const timeText = `${moment(new Date(time * 1000)).format('llll')}\n`;
+    let message = operation + timeText;
     if (description && description !== '') message += `Описание: ${description}\n`;
-    if (comment && comment !== '') message += `Комментарий: ${comment}\n`;
-    if (commissionRate !== 0) message += `Комиссия: ${toPrice(commissionRate)}\n`;
-    if (cashbackAmount !== 0) message += `Кэшбек: ${toPrice(cashbackAmount)}\n`;
+    if (comment && comment !== '') message += `Комментарий 👋: ${comment}\n`;
+    if (commissionRate !== 0) message += `Комиссия 💱: ${toPrice(commissionRate)}\n`;
+    if (cashbackAmount !== 0) message += `Кэшбек 💸: ${toPrice(cashbackAmount)}\n`;
     return message;
 }
