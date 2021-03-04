@@ -26,10 +26,10 @@ export const statementToString = (
     { time, description, amount, operationAmount, currencyCode, commissionRate, cashbackAmount, balance, comment }: Statement
 ) => {
     const operationSymbol = amount > 0 ? '🟢' : '🔴';
-    const toPrice = _price(currency(currencyCode));
+    const toPrice = _price(currency(980));
     const operation = amount === operationAmount
         ? `${operationSymbol} ${toPrice(amount)} (баланс 🏦: ${toPrice(balance)})\n`
-        : `${operationSymbol} ${toPrice(amount)} (операция: ${toPrice(operationAmount)}) (баланс 🏦: ${toPrice(balance)})\n`;
+        : `${operationSymbol} ${toPrice(amount)} (операция: ${_price(currency(currencyCode))(operationAmount)}) (баланс 🏦: ${toPrice(balance)})\n`;
     const timeText = `${moment(new Date(time * 1000)).format('llll')}\n`;
     let message = operation + timeText;
     if (description && description !== '') message += `Описание: ${description}\n`;
