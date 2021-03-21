@@ -4,7 +4,8 @@ import { env } from "../../env"
 import logger from '../logging/logger';
 import { Statement, statementToString } from '../monobank/model/Statement';
 import { infoToString } from '../monobank/model/UserInfo';
-import { clientInfo, searchStatement } from '../monobank/monobank'
+import { clientInfo as fetchClientInfo, searchStatement } from '../monobank/monobank'
+import { getCardName } from '../utils/names.helper';
 
 const MAX_MESSAGE_LENGTH = 4000;
 
@@ -12,6 +13,28 @@ const handleError = (err: any, ctx: Context) => {
     const message = err.message;
     const url = err.config?.url;
     ctx.reply(`Got error:\n${JSON.stringify({ message, url }, null, 2)}`);
+}
+
+const handleStatements = (resp: AxiosResponse<Statement[]>, ctx: Context) => {
+    const statements = resp.data;
+    let message = '';
+    statements
+        .sort((st1, st2) => st2.time - st1.time)
+        .forEach(st => {
+            const statement = statementToString(st);
+            if (message.length + statement.length > MAX_MESSAGE_LENGTH) {
+                ctx.reply(message);
+                message = statement;
+            } else {
+                if (message.length !== 0) {
+                    message += '\n\n';
+                }
+                message += statement;
+            }
+        })
+    if (message.length > 0) {
+        ctx.reply(message);
+    }
 }
 
 const authUser = async (ctx: Context, next: () => Promise<void>) => {
@@ -27,47 +50,42 @@ const authUser = async (ctx: Context, next: () => Promise<void>) => {
 }
 
 const sendClientInfo = (ctx: Context) => {
-    clientInfo().then(resp => {
-        ctx.reply(infoToString(resp.data))
-    })
+    const parts = ctx.message.text.split(' ');
+    fetchClientInfo(parts[1])
+        .then(resp => {
+            ctx.reply(infoToString(resp.data))
+        })
         .catch(ex => handleError(ex, ctx))
-}
-
-const handleStatements = (resp: AxiosResponse<Statement[]>, ctx: Context) => {
-    const statements = resp.data;
-    let message = '';
-    statements.sort((st1, st2) => st2.time - st1.time).forEach(st => {
-        const statement = statementToString(st);
-        if (message.length + statement.length > MAX_MESSAGE_LENGTH) {
-            ctx.reply(message);
-            message = statement;
-        } else {
-            if (message.length !== 0) {
-                message += '\n\n' + statement;
-            } else {
-                message += statement;
-            }
-        }
-    })
-    if (message.length > 0) {
-        ctx.reply(message);
-    }
 }
 
 const sendOperations = (ctx: Context) => {
     const parts = ctx.message.text.split(' ');
-    searchStatement(parts[1], parts[2], parts[3])
+    if (parts.length < 3) {
+        ctx.reply('Use the command as follows: <card_index> <from> <to>');
+        return;
+    }
+    searchStatement(parts[2], parts[3], parts[1])
         .then(resp => handleStatements(resp, ctx))
         .catch(ex => handleError(ex, ctx))
+        .finally(() => logger.info(`Called search statement with [${parts}]`));
+}
+
+const sendCards = (ctx: Context) => {
+    let message = '';
+    env.app.monobank_cards.forEach((cardId, index) => {
+        message += `${index + 1} - ${getCardName(cardId)}, '${cardId}'\n`;
+    })
+    ctx.reply(message);
 }
 
 const launchBot = () => {
     logger.info('Launching bot');
     const bot = new Telegraf(env.app.bot_token);
     bot.use(authUser);
-    bot.start(ctx => ctx.reply('Welcome!'));
+    bot.start(ctx => ctx.reply('This is a private bot, you are not welcome.'));
     bot.command('/info', sendClientInfo);
     bot.command('/operations', sendOperations);
+    bot.command('/cards', sendCards);
     bot.catch(handleError);
     bot.launch();
     return bot;
@@ -75,13 +93,13 @@ const launchBot = () => {
 
 const bot = launchBot();
 
-const _sendMessage = (id: string, message: string) => {
-    logger.info(`bot -> '${id}': ${message}`);
-    bot.telegram.sendMessage(id, message);
+function _logAndSendMessage(chat_id: string) {
+    return function (message: string) {
+        logger.info(`bot -> '${chat_id}': ${message}`);
+        bot.telegram.sendMessage(chat_id, message);
+    }
 }
 
 export const sendMessage = (message: string) => {
-    env.app.telegram_receiver_ids.forEach(id => {
-        _sendMessage(id, message);
-    })
+    env.app.telegram_receiver_ids.forEach(_logAndSendMessage(message))
 }

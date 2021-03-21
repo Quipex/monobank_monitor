@@ -1,3 +1,4 @@
+import { getCardName } from '../../utils/names.helper';
 import { Statement, statementToString } from './Statement';
 
 export interface WebhookEvent {
@@ -9,5 +10,6 @@ export interface WebhookEvent {
 }
 
 export const eventToString = ({ data: { account, statementItem } }: WebhookEvent) => (
-    `${statementToString(statementItem)}\nКарта '${account}'`
+    `${statementToString(statementItem)}\n` +
+    `Карта '${getCardName(account)}'`
 )

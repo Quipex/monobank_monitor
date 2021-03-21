@@ -1,4 +1,5 @@
 import { currency, toPrice } from '../../utils/money.helper';
+import { getCardName } from '../../utils/names.helper';
 
 export interface Account {
     id: string;
@@ -24,5 +25,5 @@ enum CashbackType {
 }
 
 export const accountToString = ({id, balance, currencyCode, type}: Account) => (
-    `Карта '${id}' ${type} (баланс: ${toPrice(balance)} ${currency(currencyCode)}) `
+    `Карта '${getCardName(id)}' ${type} (баланс: ${toPrice(balance)} ${currency(currencyCode)}) `
 )
