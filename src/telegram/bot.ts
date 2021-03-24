@@ -39,7 +39,7 @@ const handleStatements = (resp: AxiosResponse<Statement[]>, ctx: Context) => {
 
 const authUser = async (ctx: Context, next: () => Promise<void>) => {
     const chatId = ctx.chat.id;
-    logger.info(`${chatId} -> bot: '${ctx.message.text}'`);
+    logger.info(`${chatId} -> bot:\n'${ctx.message.text}'`);
     if (env.app.telegram_receiver_ids.find(id => id === chatId.toString())) {
         logger.info(`bot -> ${chatId}`);
         await next();
@@ -93,9 +93,9 @@ const launchBot = () => {
 
 const bot = launchBot();
 
-function _logAndSendMessage(chat_id: string) {
-    return function (message: string) {
-        logger.info(`bot -> '${chat_id}': ${message}`);
+function _logAndSendMessage(message: string) {
+    return function (chat_id: string) {
+        logger.info(`bot -> '${chat_id}':\n${message}`);
         bot.telegram.sendMessage(chat_id, message);
     }
 }
