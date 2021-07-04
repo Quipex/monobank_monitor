@@ -10,8 +10,10 @@ export const currency = (code: number) => {
             return 'BEL';
         case 643:
             return '₽';
+        case 498:
+            return 'MDL';
         default:
-            return code.toString();
+            return `[${code.toString()}]`;
     }
 }
 
