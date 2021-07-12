@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { Context, Telegraf } from 'telegraf'
-import { env } from "../../env"
+import { env } from "../utils/env"
 import logger from '../logging/logger';
 import { Statement, statementToString } from '../monobank/model/Statement';
 import { infoToString } from '../monobank/model/UserInfo';
@@ -102,4 +102,8 @@ function _logAndSendMessage(message: string) {
 
 export const sendMessage = (message: string) => {
     env.app.telegram_receiver_ids.forEach(_logAndSendMessage(message))
+}
+
+export const sendRestrictedMessage = (message: string) => {
+    env.app.telegram_restricted_view_ids.forEach(_logAndSendMessage(message))
 }

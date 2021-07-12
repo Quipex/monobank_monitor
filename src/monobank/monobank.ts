@@ -2,7 +2,7 @@ import { Statement } from './model/Statement';
 import { UserInfo } from './model/UserInfo';
 import { ENDPOINTS } from './endpoints';
 import axios, { AxiosPromise } from "axios"
-import { env } from "../../env"
+import { env } from "../utils/env"
 
 const _call = (endpoint: string, cardIndex = '1') => axios({
     method: 'get',
