@@ -17,6 +17,8 @@ export const launchServer = () => {
     app.use(successHandler);
     app.use(errorHandler);
 
+    app.get('/monobank', (_, res) => res.sendStatus(200))
+
     app.post('/monobank', (req, res) => {
         const webhook = req.body as WebhookEvent;
         logger.info(`Got new data ${JSON.stringify(webhook)}`);
