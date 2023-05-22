@@ -1,10 +1,11 @@
 import { AxiosResponse } from 'axios';
-import { Context, Telegraf } from 'telegraf'
-import { env } from "../utils/env"
+import { Context, Telegraf } from 'telegraf';
 import logger from '../logging/logger';
-import { Statement, statementToString } from '../monobank/model/Statement';
-import { infoToString } from '../monobank/model/UserInfo';
-import { clientInfo as fetchClientInfo, searchStatement } from '../monobank/monobank'
+import { statementToString } from '../monobank/mappers/statement';
+import { infoToString } from '../monobank/mappers/userInfo';
+import { Statement } from '../monobank/model/Statement';
+import { clientInfo as fetchClientInfo, searchStatement } from '../monobank/monobankApi';
+import { env } from "../utils/env";
 import { getCardName } from '../utils/names.helper';
 
 const MAX_MESSAGE_LENGTH = 4000;
@@ -45,13 +46,13 @@ const authUser = async (ctx: Context, next: () => Promise<void>) => {
         await next();
     } else {
         logger.warn(`Rejected ${chatId}: ${ctx.message.text}`);
-        ctx.reply('You\'re not whitelisted');
+        await ctx.reply('You\'re not whitelisted');
     }
 }
 
 const sendClientInfo = (ctx: Context) => {
-    const parts = ctx.message.text.split(' ');
-    fetchClientInfo(parts[1])
+    const [, cardIndex] = ctx.message.text.split(' ');
+    fetchClientInfo(cardIndex)
         .then(resp => {
             ctx.reply(infoToString(resp.data))
         })
@@ -64,7 +65,9 @@ const sendOperations = (ctx: Context) => {
         ctx.reply('Use the command as follows: <card_index> <from> <to>');
         return;
     }
-    searchStatement(parts[2], parts[3], parts[1])
+
+    const [, cardIndex, from, to] = parts;
+    searchStatement(from, to, cardIndex)
         .then(resp => handleStatements(resp, ctx))
         .catch(ex => handleError(ex, ctx))
         .finally(() => logger.info(`Called search statement with [${parts}]`));

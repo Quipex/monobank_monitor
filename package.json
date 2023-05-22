@@ -22,6 +22,7 @@
         "moment-timezone": "^0.5.33",
         "morgan": "^1.10.0",
         "npm": "^7.6.0",
+        "oracledb": "^5.5.0",
         "telegraf": "git+https://github.com/LetItCode/telegraf.git",
         "ts-node": "^9.1.1",
         "tslib": "^2.1.0",
@@ -32,6 +33,7 @@
         "@types/moment-timezone": "^0.5.30",
         "@types/morgan": "^1.9.2",
         "@types/winston": "^2.4.4",
+        "nodemon": "^2.0.22",
         "typescript": "^4.2.2"
     }
 }
