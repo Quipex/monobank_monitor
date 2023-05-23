@@ -1,78 +1,38 @@
-import moment from "moment-timezone";
-import { currency, toPrice as _toPrice } from "../../utils/money.helper";
-
 export interface Statement {
+    // Унікальний id транзакції
     id: string;
-    // Unix time
+    // Час транзакції в секундах в форматі Unix time
     time: number;
+    // Опис транзакцій
     description: string;
+    // Код типу транзакції (Merchant Category Code), відповідно ISO 18245
     mcc: number;
+    // Оригінальний код типу транзакції (Merchant Category Code), відповідно ISO 18245
+    originalMcc: number;
+    // Статус блокування суми
     hold: boolean;
+    // Сума у валюті рахунку в мінімальних одиницях валюти (копійках, центах)
     amount: number;
+    // Сума у валюті транзакції в мінімальних одиницях валюти (копійках, центах)
     operationAmount: number;
+    // Код валюти рахунку відповідно ISO 4217
     currencyCode: number;
+    // Розмір комісії в мінімальних одиницях валюти (копійках, центах)
     commissionRate: number;
+    // Розмір кешбеку в мінімальних одиницях валюти (копійках, центах)
     cashbackAmount: number;
+    // Баланс рахунку в мінімальних одиницях валюти (копійках, центах)
     balance: number;
+    // Коментар до переказу, уведений користувачем. Якщо не вказаний, поле буде відсутнім
     comment: string;
+    // Номер квитанції для check.gov.ua. Поле може бути відсутнім
     receiptId: string;
+    // Номер квитанції ФОПа, приходить у випадку якщо це операція із зарахуванням коштів
+    invoiceId: string;
+    // ЄДРПОУ контрагента, присутній лише для елементів виписки рахунків ФОП
     counterEdrpou: string;
+    // IBAN контрагента, присутній лише для елементів виписки рахунків ФОП
     counterIban: string;
+    // Найменування контрагента
+    counterName: string;
 }
-
-const _price = (currency: string) => (amount: number) => (`${_toPrice(amount)}${currency}`);
-const _toUaPrice = _price(currency(980));
-
-export const statementToString = (
-    {
-        time,
-        description,
-        amount,
-        operationAmount,
-        currencyCode,
-        commissionRate,
-        cashbackAmount,
-        balance,
-        comment
-    }: Statement
-) => {
-    const operationSymbol = amount > 0 ? '🟢' : '🔴';
-    const operation = amount === operationAmount
-        ? `${operationSymbol} ${_toUaPrice(amount)} (баланс 🏦: ${_toUaPrice(balance)})\n`
-        : `${operationSymbol} ${_toUaPrice(amount)} (операция: ${_price(currency(currencyCode))(operationAmount)}) (баланс 🏦: ${_toUaPrice(balance)})\n`;
-    let message = operation + _formattedTime(time);
-    if (description && description !== '') message += _description(description);
-    if (comment && comment !== '') message += _comment(comment);
-    if (commissionRate !== 0) message += _commissionRate(commissionRate);
-    if (cashbackAmount !== 0) message += _cashback(cashbackAmount);
-    return message;
-}
-
-export const statementToRestrictedString = (
-    {
-        time,
-        description,
-        amount,
-        operationAmount,
-        currencyCode,
-        commissionRate,
-        cashbackAmount,
-        comment
-    }: Statement
-) => {
-    const operation = amount === operationAmount
-        ? `+${_toUaPrice(amount)}\n`
-        : `${_toUaPrice(amount)} (операция: ${_price(currency(currencyCode))(operationAmount)})\n`;
-    let message = operation + _formattedTime(time);
-    if (description && description !== '') message += _description(description);
-    if (comment && comment !== '') message += _comment(comment);
-    if (commissionRate !== 0) message += _commissionRate(commissionRate);
-    if (cashbackAmount !== 0) message += _cashback(cashbackAmount);
-    return message;
-}
-
-const _formattedTime = (time: number) => `${moment(new Date(time * 1000)).format('llll')}\n`;
-const _description = (description: string) => `Описание: ${description}\n`;
-const _comment = (comment: string) => `Комментарий 👋: ${comment}\n`;
-const _commissionRate = (commissionRate: number) => `Комиссия 💱: ${_toUaPrice(commissionRate)}\n`;
-const _cashback = (cashbackAmount: number) => `Кэшбек 💸: ${_toUaPrice(cashbackAmount)}\n`;

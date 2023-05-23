@@ -15,6 +15,6 @@ export const currency = (code: number) => {
         default:
             return `[${code.toString()}]`;
     }
-}
+};
 
 export const toPrice = (amount: number) => (amount / 100).toFixed(2);

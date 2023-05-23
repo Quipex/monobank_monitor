@@ -1,7 +1,4 @@
-import * as dotenv from 'dotenv';
 import { getOsEnv, getOsEnvArray } from './path.helper';
-
-dotenv.config();
 
 interface EnvConfig {
     app: {
@@ -13,7 +10,10 @@ interface EnvConfig {
         monobank_cards: string[];
         monobank_restricted_view_cards: string[];
         telegram_restricted_view_ids: string[];
-    }
+        database_conn_string: string;
+        database_username: string;
+        database_password: string;
+    };
 }
 
 export const env: EnvConfig = {
@@ -25,6 +25,9 @@ export const env: EnvConfig = {
         monobank_token_names: getOsEnvArray('APP_MONOBANK_CARD_NAMES'),
         monobank_cards: getOsEnvArray('APP_MONOBANK_CARDS'),
         monobank_restricted_view_cards: getOsEnvArray('APP_TELEGRAM_RESTRICTED_VIEW_CARDS'),
-        telegram_restricted_view_ids: getOsEnvArray('APP_TELEGRAM_RESTRICTED_VIEW_IDS')
+        telegram_restricted_view_ids: getOsEnvArray('APP_TELEGRAM_RESTRICTED_VIEW_IDS'),
+        database_conn_string: getOsEnv('APP_DB_CONN_STRING'),
+        database_username: getOsEnv('APP_DB_USERNAME'),
+        database_password: getOsEnv('APP_DB_PASSWORD'),
     }
 };
