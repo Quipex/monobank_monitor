@@ -2,8 +2,8 @@ import { RequestHandler } from 'express-serve-static-core';
 import { isEventRestricted } from '../../monobank/helpers/isEventRestricted';
 import { eventToString, restrictedEventToString } from '../../monobank/mappers/webhookEvent';
 import { WebhookEvent } from '../../monobank/model/WebhookEvent';
-import { sendMessage, sendRestrictedMessage } from '../../telegram/bot';
 import * as ExpensesRepository from '../../persistence/expenses/actions';
+import { sendMessage, sendRestrictedMessage } from '../../telegram/bot';
 
 let lastEventId: string;
 
@@ -26,7 +26,8 @@ const handleNewPaymentEvent: RequestHandler = async (req, res) => {
     sendMessage(eventToString(webhook));
 
     // Finally, we save the data
-    await ExpensesRepository.saveExpenses(webhook.data.statementItem as any);
+    const expense = { ...webhook.data.statementItem, account: webhook.data.account };
+    await ExpensesRepository.saveExpenses(expense as any);
     res.sendStatus(200);
 };
 
