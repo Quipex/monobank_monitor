@@ -3,10 +3,11 @@ import { isEventRestricted } from '../../monobank/helpers/isEventRestricted';
 import { eventToString, restrictedEventToString } from '../../monobank/mappers/webhookEvent';
 import { WebhookEvent } from '../../monobank/model/WebhookEvent';
 import { sendMessage, sendRestrictedMessage } from '../../telegram/bot';
+import * as ExpensesRepository from '../../persistence/expenses/actions';
 
 let lastEventId: string;
 
-const handleNewPaymentEvent: RequestHandler = (req, res) => {
+const handleNewPaymentEvent: RequestHandler = async (req, res) => {
     const webhook = req.body as WebhookEvent;
     const currentEventId = webhook.data.statementItem.id;
 
@@ -23,6 +24,9 @@ const handleNewPaymentEvent: RequestHandler = (req, res) => {
     }
     // Then we send the regular message to other recipients
     sendMessage(eventToString(webhook));
+
+    // Finally, we save the data
+    await ExpensesRepository.saveExpenses(webhook.data.statementItem as any);
     res.sendStatus(200);
 };
 

@@ -1,3 +1,3 @@
 export const answerToMonobankGet = (_, res) => {
-    res.sendStatus(200)
-}
+    res.sendStatus(200);
+};

@@ -4,4 +4,4 @@ export const ENDPOINTS = {
     PERSONAL_STATEMENT: function personalStatementUrl(account: string, from: string, to: string) {
         return `personal/statement/${account}/${from}/${to}`;
     }
-}
+};

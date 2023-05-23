@@ -8,10 +8,10 @@ const errorResponseFormat = `:remote-addr - :method :url :status - :response-tim
 
 export const successHandler = morgan(successResponseFormat, {
     skip: (_req, res) => res.statusCode >= 400,
-    stream: { write: (message) => logger.info(message.trim()) },
+    stream: { write: (message) => logger.info(message.trim()) }
 });
 
 export const errorHandler = morgan(errorResponseFormat, {
     skip: (_req, res) => res.statusCode < 400,
-    stream: { write: (message) => logger.error(message.trim()) },
+    stream: { write: (message) => logger.error(message.trim()) }
 });

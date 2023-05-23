@@ -1,4 +1,4 @@
-import { format, createLogger, transports } from "winston";
+import { createLogger, format, transports } from "winston";
 
 const enumerateErrorFormat = format((info) => {
     if (info instanceof Error) {
@@ -10,7 +10,7 @@ const commonFormats = [
     enumerateErrorFormat(),
     format.timestamp(),
     format.printf(({ level, message, timestamp }) => `[${timestamp}] [${level}]: ${message}`)
-]
+];
 
 const logger = createLogger({
     transports: [
@@ -24,7 +24,7 @@ const logger = createLogger({
             format: format.combine(...commonFormats),
             filename: 'full.log'
         })
-    ],
+    ]
 });
 
 export default logger;
