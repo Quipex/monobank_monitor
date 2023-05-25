@@ -36,5 +36,5 @@ jobs:
 
             -   name: Build and push Docker image
                 run: |
-                    docker build -t quipex.monobot:latest -t quipex/monobot:${{ github.sha }} .
+                    docker build -t quipex/monobot:latest -t quipex/monobot:${{ github.sha }} .
                     docker push quipex/monobot --all-tags
