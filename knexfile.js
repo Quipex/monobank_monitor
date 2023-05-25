@@ -10,8 +10,7 @@ module.exports = {
         connection: {
             user: process.env['APP_DB_USERNAME'],
             password: process.env['APP_DB_PASSWORD'],
-            connectString: process.env['APP_DB_CONN_STRING'],
-            connectionTimeout: 100
+            connectString: process.env['APP_DB_CONN_STRING']
         }
     },
 
@@ -20,8 +19,7 @@ module.exports = {
         connection: {
             user: process.env['APP_DB_USERNAME'],
             password: process.env['APP_DB_PASSWORD'],
-            connectString: process.env['APP_DB_CONN_STRING'],
-            connectionTimeout: 100
+            connectString: process.env['APP_DB_CONN_STRING']
         }
     }
 };
