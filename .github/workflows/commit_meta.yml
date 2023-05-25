@@ -1,0 +1,23 @@
+name: Write Commit Meta
+
+on:
+    push
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v2
+
+            -   name: Write commit meta
+                run: echo ${{ github.sha }} $(date +"%Y-%m-%d_%H:%M:%S_%:z") > commit_meta
+
+            -   name: Commit and push changes
+                run: |
+                    git config user.name "${{ github.actor }}"
+                    git config user.email "${{ github.actor }}@users.noreply.github.com"
+                    git add commit_hash.txt
+                    git commit -m "Update commit hash [skip ci]"
+                    git push
