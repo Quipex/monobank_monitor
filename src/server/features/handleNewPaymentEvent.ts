@@ -5,8 +5,11 @@ import * as ExpensesRepository from '@persistence/expenses/actions';
 import { sendMessage, sendRestrictedMessage } from '@telegram/bot';
 import FixedLengthArray from '@utils/fixed-length-array';
 import { RequestHandler } from 'express-serve-static-core';
+import pRetry from 'p-retry';
 
 const lastEventIds = new FixedLengthArray<string>(10);
+
+const DB_WRITE_RETRIES = 5;
 
 const handleNewPaymentEvent: RequestHandler = async (req, res) => {
     // We let monobank know ASAP that we're alive
@@ -30,9 +33,10 @@ const handleNewPaymentEvent: RequestHandler = async (req, res) => {
     // Finally, we save the data
     const expense = { ...webhook.data.statementItem, account: webhook.data.account };
     try {
-        await ExpensesRepository.saveExpenses(expense as any);
+        await pRetry(() => ExpensesRepository.saveExpenses(expense as any), { retries: DB_WRITE_RETRIES });
     } catch (e) {
-        sendMessage(`Failed to save into DB 😢\nError: ${e.message}\nData: ${JSON.stringify(expense)}`)
+        sendMessage(`Failed to save into DB after ${DB_WRITE_RETRIES} retries 😢\n`
+            + `Error: ${e.message}\nData: ${JSON.stringify(expense)}`);
     }
 };
 
