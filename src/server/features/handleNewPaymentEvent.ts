@@ -1,10 +1,10 @@
+import { isEventRestricted } from '@monobank/helpers/isEventRestricted';
+import { eventToString, restrictedEventToString } from '@monobank/mappers/webhookEvent';
+import { WebhookEvent } from '@monobank/model/WebhookEvent';
+import * as ExpensesRepository from '@persistence/expenses/actions';
+import { sendMessage, sendRestrictedMessage } from '@telegram/bot';
+import FixedLengthArray from '@utils/fixed-length-array';
 import { RequestHandler } from 'express-serve-static-core';
-import { isEventRestricted } from '../../monobank/helpers/isEventRestricted';
-import { eventToString, restrictedEventToString } from '../../monobank/mappers/webhookEvent';
-import { WebhookEvent } from '../../monobank/model/WebhookEvent';
-import * as ExpensesRepository from '../../persistence/expenses/actions';
-import { sendMessage, sendRestrictedMessage } from '../../telegram/bot';
-import FixedLengthArray from '../../utils/fixed-length-array';
 
 const lastEventIds = new FixedLengthArray<string>(10);
 

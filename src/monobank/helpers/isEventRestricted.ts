@@ -1,4 +1,4 @@
-import { env } from '../../utils/env';
+import { env } from '@utils/env';
 import { WebhookEvent } from '../model/WebhookEvent';
 
 export function isEventRestricted({ data: { account, statementItem } }: WebhookEvent): boolean {

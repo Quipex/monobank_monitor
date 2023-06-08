@@ -20,6 +20,16 @@
         "emitDecoratorMetadata": true,
         "resolveJsonModule": true,
         "esModuleInterop": true,
+        "baseUrl": "./",
+        "paths": {
+            "@configuration/*": ["src/configuration/*"],
+            "@logging/*": ["src/logging/*"],
+            "@monobank/*": ["src/monobank/*"],
+            "@server/*": ["src/server/*"],
+            "@persistence/*": ["src/persistence/*"],
+            "@telegram/*": ["./src/telegram/*"],
+            "@utils/*": ["./src/utils/*"],
+        },
         "types": [
             "node"
         ],
@@ -32,6 +42,6 @@
         ]
     },
     "include": [
-        "./src/**/*"
+        "./src"
     ]
 }

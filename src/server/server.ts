@@ -1,9 +1,9 @@
 import bodyParser from "body-parser";
 import express from "express";
 import { readFileSync } from 'fs';
-import logger from "../logging/logger";
-import { errorHandler, successHandler } from '../logging/morgan';
-import { env } from '../utils/env';
+import logger from "@logging/logger";
+import { errorHandler, successHandler } from '@logging/morgan';
+import { env } from '@utils/env';
 import { answerToMonobankGet } from './features/answerToMonobankGet';
 import { handleNewPaymentEvent } from './features/handleNewPaymentEvent';
 

@@ -1,6 +1,6 @@
 import axios, { AxiosPromise } from "axios";
-import { env } from "../utils/env";
-import { toUnixTime } from "../utils/time.helper";
+import { env } from "@utils/env";
+import { toUnixTime } from "@utils/time.helper";
 import { ENDPOINTS } from './endpoints';
 import { Statement } from './model/Statement';
 import { UserInfo } from './model/UserInfo';

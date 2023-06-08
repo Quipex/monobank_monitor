@@ -1,12 +1,12 @@
+import logger from '@logging/logger';
+import { clientInfo as fetchClientInfo, searchStatement } from '@monobank/api';
+import { statementToString } from '@monobank/mappers/statement';
+import { infoToString } from '@monobank/mappers/userInfo';
+import { Statement } from '@monobank/model/Statement';
+import { env } from "@utils/env";
+import { getCardName } from '@utils/names.helper';
 import { AxiosResponse } from 'axios';
 import { Context, Telegraf } from 'telegraf';
-import logger from '../logging/logger';
-import { statementToString } from '../monobank/mappers/statement';
-import { infoToString } from '../monobank/mappers/userInfo';
-import { Statement } from '../monobank/model/Statement';
-import { clientInfo as fetchClientInfo, searchStatement } from '../monobank/api';
-import { env } from "../utils/env";
-import { getCardName } from '../utils/names.helper';
 
 const MAX_MESSAGE_LENGTH = 4000;
 

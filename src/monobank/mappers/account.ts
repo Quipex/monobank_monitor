@@ -1,5 +1,5 @@
-import { currency, toPrice } from '../../utils/money.helper';
-import { getCardName } from '../../utils/names.helper';
+import { currency, toPrice } from '@utils/money.helper';
+import { getCardName } from '@utils/names.helper';
 import { Account } from '../model/Account';
 
 

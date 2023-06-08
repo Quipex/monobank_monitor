@@ -1,4 +1,4 @@
-import { getCardName } from '../../utils/names.helper';
+import { getCardName } from '@utils/names.helper';
 import { WebhookEvent } from '../model/WebhookEvent';
 import { statementToRestrictedString, statementToString } from './statement';
 

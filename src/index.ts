@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 import moment from "moment";
-import { launchServer } from "./server/server";
+import { launchServer } from "@server/server";
 
 moment.locale('ru');
 moment.tz.setDefault('Europe/Kiev');

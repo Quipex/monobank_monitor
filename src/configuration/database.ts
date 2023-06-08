@@ -1,6 +1,6 @@
+import { env } from '@utils/env';
 import knex from 'knex';
 import knexStringCase from 'knex-stringcase';
-import { env } from '../utils/env';
 
 const basicConfig = {
     client: 'oracledb',
