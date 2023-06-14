@@ -1,4 +1,4 @@
-import { createLogger, format, transports } from "winston";
+import { createLogger, format, transports } from 'winston';
 
 const enumerateErrorFormat = format((info) => {
     if (info instanceof Error) {
