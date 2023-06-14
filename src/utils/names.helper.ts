@@ -1,9 +1,4 @@
-import { env } from "./env";
-
-export function getCardName(cardId: string) {
-    const cardNameBy = fn(env.app.monobank_cards);
-    return cardNameBy(cardId);
-}
+import env from './env.js';
 
 function fn(arr: string[]) {
     return function (str: string) {
@@ -12,4 +7,9 @@ function fn(arr: string[]) {
                ? env.app.monobank_token_names[index]
                : `No name token '${str}'`;
     };
+}
+
+export function getCardName(cardId: string) {
+    const cardNameBy = fn(env.app.monobank_cards);
+    return cardNameBy(cardId);
 }

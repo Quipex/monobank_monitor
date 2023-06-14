@@ -1,0 +1,59 @@
+extends:
+    - eslint:recommended
+    - plugin:import/recommended
+    # the following lines do the trick
+    - plugin:import/typescript
+    - plugin:@typescript-eslint/recommended
+    - plugin:require-extensions/recommended
+parser: "@typescript-eslint/parser"
+plugins:
+    - "@typescript-eslint"
+    - require-extensions
+settings:
+    import/resolver:
+        # You will also need to install and configure the TypeScript resolver
+        # See also https://github.com/import-js/eslint-import-resolver-typescript#configuration
+        typescript: true
+        node: true
+ignorePatterns:
+    - 'migrations'
+    - 'knexfile.js'
+    - 'dist'
+rules:
+    no-shadow: off
+    "@typescript-eslint/no-explicit-any": off
+    "@typescript-eslint/no-shadow":
+        - error
+    no-use-before-define: off
+    "@typescript-eslint/no-use-before-define":
+        - error
+    complexity:
+        - error
+        - 10
+    semi:
+        - error
+    no-await-in-loop: warn
+    no-eval: error
+    no-implied-eval: error
+    prefer-promise-reject-errors: warn
+    quotes:
+        - error
+        - single
+    import/order:
+        - error
+        -   groups:
+                - builtin
+                - external
+                - [ internal, index, sibling ]
+                - object
+            pathGroups:
+                -   pattern: '#**'
+                    group: external
+                    position: after
+            newlines-between: always
+            distinctGroup: false
+    import/extensions:
+        - error
+        - ignorePackages
+        -   ts: never
+    import/no-named-as-default-member: off

@@ -1,9 +1,10 @@
-import axios, { AxiosPromise } from "axios";
-import { env } from "@utils/env";
-import { toUnixTime } from "@utils/time.helper";
-import { ENDPOINTS } from './endpoints';
-import { Statement } from './model/Statement';
-import { UserInfo } from './model/UserInfo';
+import axios, { AxiosPromise } from 'axios';
+
+import env from '#utils/env.js';
+import { toUnixTime } from '#utils/time.helper.js';
+import { ENDPOINTS } from './endpoints.js';
+import { Statement } from './model/Statement.js';
+import { UserInfo } from './model/UserInfo.js';
 
 const _call = (endpoint: string, cardIndex = '1') => axios({
     method: 'get',

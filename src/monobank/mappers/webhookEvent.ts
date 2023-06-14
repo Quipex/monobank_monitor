@@ -1,6 +1,7 @@
-import { getCardName } from '@utils/names.helper';
-import { WebhookEvent } from '../model/WebhookEvent';
-import { statementToRestrictedString, statementToString } from './statement';
+import { getCardName } from '#utils/names.helper.js';
+import { statementToRestrictedString, statementToString } from './statement.js';
+
+import { WebhookEvent } from '../model/WebhookEvent.js';
 
 
 export const eventToString = ({ data: { account, statementItem } }: WebhookEvent) => (

@@ -1,4 +1,4 @@
-import { Statement } from './Statement';
+import { Statement } from './Statement.js';
 
 export interface WebhookEvent {
     type: string;

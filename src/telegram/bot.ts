@@ -1,85 +1,12 @@
-import logger from '@logging/logger';
-import { clientInfo as fetchClientInfo, searchStatement } from '@monobank/api';
-import { statementToString } from '@monobank/mappers/statement';
-import { infoToString } from '@monobank/mappers/userInfo';
-import { Statement } from '@monobank/model/Statement';
-import { env } from "@utils/env";
-import { getCardName } from '@utils/names.helper';
-import { AxiosResponse } from 'axios';
-import { Context, Telegraf } from 'telegraf';
+import { Telegraf } from 'telegraf';
 
-const MAX_MESSAGE_LENGTH = 4000;
-
-const handleError = (err: any, ctx: Context) => {
-    const message = err.message;
-    const url = err.config?.url;
-    ctx.reply(`Got error:\n${JSON.stringify({ message, url }, null, 2)}`);
-};
-
-const handleStatements = (resp: AxiosResponse<Statement[]>, ctx: Context) => {
-    const statements = resp.data;
-    let message = '';
-    statements
-        .sort((st1, st2) => st2.time - st1.time)
-        .forEach(st => {
-            const statement = statementToString(st);
-            if (message.length + statement.length > MAX_MESSAGE_LENGTH) {
-                ctx.reply(message);
-                message = statement;
-            } else {
-                if (message.length !== 0) {
-                    message += '\n\n';
-                }
-                message += statement;
-            }
-        });
-    if (message.length > 0) {
-        ctx.reply(message);
-    }
-};
-
-const authUser = async (ctx: Context, next: () => Promise<void>) => {
-    const chatId = ctx.chat.id;
-    logger.info(`${chatId} -> bot:\n'${ctx.message.text}'`);
-    if (env.app.telegram_receiver_ids.find(id => id === chatId.toString())) {
-        logger.info(`bot -> ${chatId}`);
-        await next();
-    } else {
-        logger.warn(`Rejected ${chatId}: ${ctx.message.text}`);
-        await ctx.reply('You\'re not whitelisted');
-    }
-};
-
-const sendClientInfo = (ctx: Context) => {
-    const [, cardIndex] = ctx.message.text.split(' ');
-    fetchClientInfo(cardIndex)
-        .then(resp => {
-            ctx.reply(infoToString(resp.data));
-        })
-        .catch(ex => handleError(ex, ctx));
-};
-
-const sendOperations = (ctx: Context) => {
-    const parts = ctx.message.text.split(' ');
-    if (parts.length < 3) {
-        ctx.reply('Use the command as follows: <card_index> <from> <to>');
-        return;
-    }
-
-    const [, cardIndex, from, to] = parts;
-    searchStatement(from, to, cardIndex)
-        .then(resp => handleStatements(resp, ctx))
-        .catch(ex => handleError(ex, ctx))
-        .finally(() => logger.info(`Called search statement with [${parts}]`));
-};
-
-const sendCards = (ctx: Context) => {
-    let message = '';
-    env.app.monobank_cards.forEach((cardId, index) => {
-        message += `${index + 1} - ${getCardName(cardId)}, '${cardId}'\n`;
-    });
-    ctx.reply(message);
-};
+import logger from '#logging/logger.js';
+import env from '#utils/env.js';
+import handleError from './common/handleError.js';
+import authUser from './features/authUser.js';
+import sendClientInfo from './features/sendClientInfo.js';
+import sendOperations from './features/sendOperations.js';
+import sendCards from './features/sendCards.js';
 
 const launchBot = () => {
     logger.info('Launching bot');
@@ -96,17 +23,4 @@ const launchBot = () => {
 
 const bot = launchBot();
 
-function _logAndSendMessage(message: string) {
-    return function (chat_id: string) {
-        logger.info(`bot -> '${chat_id}':\n${message}`);
-        bot.telegram.sendMessage(chat_id, message);
-    };
-}
-
-export const sendMessage = (message: string) => {
-    env.app.telegram_receiver_ids.forEach(_logAndSendMessage(message));
-};
-
-export const sendRestrictedMessage = (message: string) => {
-    env.app.telegram_restricted_view_ids.forEach(_logAndSendMessage(message));
-};
+export default bot;

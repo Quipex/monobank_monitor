@@ -1,14 +1,15 @@
-import bodyParser from "body-parser";
-import express from "express";
-import { readFileSync } from 'fs';
-import logger from "@logging/logger";
-import { errorHandler, successHandler } from '@logging/morgan';
-import { env } from '@utils/env';
-import { answerToMonobankGet } from './features/answerToMonobankGet';
-import { handleNewPaymentEvent } from './features/handleNewPaymentEvent';
+import bodyParser from 'body-parser';
+import express from 'express';
+
+import env from '#utils/env.js';
+import logger from '#utils/logging/logger.js';
+import { errorHandler, successHandler } from '#utils/logging/morgan.js';
+import parsedPackage from '#utils/package.helper.js';
+import { answerToMonobankGet } from './features/answerToMonobankGet.js';
+import { handleNewPaymentEvent } from './features/handleNewPaymentEvent.js';
+
 
 const app = express();
-const commitMeta = readFileSync('commit_meta');
 
 const launchServer = () => {
     app.use(bodyParser.json());
@@ -19,8 +20,10 @@ const launchServer = () => {
     app.post('/monobank', handleNewPaymentEvent);
 
     app.listen(env.app.port, () => {
-        logger.info(`App is listening on port ${env.app.port}\nLatest commit: ${commitMeta}`);
+        logger.info(`App is listening on port ${env.app.port}\n` +
+            `App version: ${parsedPackage.version}`);
     });
 };
 
-export { launchServer, app };
+export { app, launchServer };
+

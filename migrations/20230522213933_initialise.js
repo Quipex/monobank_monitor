@@ -17,8 +17,8 @@ exports.up = async function (knex) {
             table.bigint('AMOUNT')
                 .comment('Сума у валюті рахунку в мінімальних одиницях валюти (копійках, центах)');
             table.bigint('OPERATION_AMOUNT')
-                .comment("-//- транзакції");
-            table.integer("CURRENCY_CODE")
+                .comment('-//- транзакції');
+            table.integer('CURRENCY_CODE')
                 .comment('Код валюти рахунку відповідно ISO 4217');
             table.bigint('COMMISSION_RATE')
                 .comment('Розмір комісії в мінімальних одиницях валюти (копійках, центах)');

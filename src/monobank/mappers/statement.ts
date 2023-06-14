@@ -1,10 +1,17 @@
 import moment from 'moment-timezone';
-import { currency, toPrice as _toPrice } from '../../utils/money.helper';
-import { Statement } from '../model/Statement';
+
+import { currency, toPrice as _toPrice } from '#utils/money.helper.js';
+
+import { Statement } from '../model/Statement.js';
 
 
-const _price = (currency: string) => (amount: number) => (`${_toPrice(amount)}${currency}`);
+const _price = (curr: string) => (amount: number) => (`${_toPrice(amount)}${curr}`);
 const _toUaPrice = _price(currency(980));
+const _formattedTime = (time: number) => `${moment(new Date(time * 1000)).format('llll')}\n`;
+const _description = (description: string) => `Описание: ${description}\n`;
+const _comment = (comment: string) => `Комментарий 👋: ${comment}\n`;
+const _commissionRate = (commissionRate: number) => `Комиссия 💱: ${_toUaPrice(commissionRate)}\n`;
+const _cashback = (cashbackAmount: number) => `Кэшбек 💸: ${_toUaPrice(cashbackAmount)}\n`;
 
 export const statementToString = (
     {
@@ -53,9 +60,3 @@ export const statementToRestrictedString = (
     if (cashbackAmount !== 0) message += _cashback(cashbackAmount);
     return message;
 };
-
-const _formattedTime = (time: number) => `${moment(new Date(time * 1000)).format('llll')}\n`;
-const _description = (description: string) => `Описание: ${description}\n`;
-const _comment = (comment: string) => `Комментарий 👋: ${comment}\n`;
-const _commissionRate = (commissionRate: number) => `Комиссия 💱: ${_toUaPrice(commissionRate)}\n`;
-const _cashback = (cashbackAmount: number) => `Кэшбек 💸: ${_toUaPrice(cashbackAmount)}\n`;

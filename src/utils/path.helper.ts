@@ -12,7 +12,7 @@ export function getPaths(paths: string[]): string[] {
     return paths.map(p => getPath(p));
 }
 
-export function getOsEnvArray(key: string, delimiter: string = ','): string[] {
+export function getOsEnvArray(key: string, delimiter = ','): string[] {
     return (process.env[key] && process.env[key].split(delimiter)) || [];
 }
 

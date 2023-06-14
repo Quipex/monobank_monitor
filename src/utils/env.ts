@@ -1,4 +1,9 @@
-import { getOsEnv, getOsEnvArray } from './path.helper';
+import * as dotenv from 'dotenv';
+
+import { getOsEnv, getOsEnvArray } from './path.helper.js';
+
+// We need to load .env file first
+dotenv.config();
 
 interface EnvConfig {
     app: {
@@ -16,7 +21,7 @@ interface EnvConfig {
     };
 }
 
-export const env: EnvConfig = {
+const env: EnvConfig = {
     app: {
         port: +getOsEnv('APP_PORT'),
         bot_token: getOsEnv('APP_BOT_TOKEN'),
@@ -31,3 +36,5 @@ export const env: EnvConfig = {
         database_password: getOsEnv('APP_DB_PASSWORD'),
     }
 };
+
+export default env;

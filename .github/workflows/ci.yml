@@ -16,11 +16,10 @@ jobs:
             -   name: Set up Node.js
                 uses: actions/setup-node@v2
                 with:
-                    node-version: 18
+                    node-version: 16
 
-            # The app shows the commit meta on the start, so we need to write it now
-            -   name: Write commit meta
-                run: echo ${{ github.sha }} $(date +"%Y-%m-%d_%H:%M:%S_%:z") > commit_meta
+            -   name: Bump app version
+                run: yarn version --patch
 
             -   name: Install dependencies
                 run: yarn install

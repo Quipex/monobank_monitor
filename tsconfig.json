@@ -1,7 +1,10 @@
 {
     "compilerOptions": {
-        "target": "es6",
-        "module": "commonjs",
+        "target": "ES2021",
+        "module": "node16",
+        "moduleResolution": "node16",
+        "moduleDetection": "force",
+        "allowSyntheticDefaultImports": true,
         "outDir": "dist",
         "preserveSymlinks": true,
         "importHelpers": true,
@@ -14,29 +17,24 @@
         "noUnusedParameters": false,
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
-        "moduleResolution": "node",
-        "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "resolveJsonModule": true,
         "esModuleInterop": true,
         "baseUrl": "./",
         "paths": {
-            "@configuration/*": ["src/configuration/*"],
-            "@logging/*": ["src/logging/*"],
-            "@monobank/*": ["src/monobank/*"],
-            "@server/*": ["src/server/*"],
-            "@persistence/*": ["src/persistence/*"],
-            "@telegram/*": ["./src/telegram/*"],
-            "@utils/*": ["./src/utils/*"],
+            "#configuration/*": ["src/configuration/*"],
+            "#logging/*": ["src/utils/logging/*"],
+            "#monobank/*": ["src/monobank/*"],
+            "#server/*": ["src/server/*"],
+            "#persistence/*": ["src/persistence/*"],
+            "#telegram/*": ["./src/telegram/*"],
+            "#utils/*": ["./src/utils/*"]
         },
         "types": [
             "node"
         ],
-        "lib": [
-            "es2017",
-            "dom"
-        ],
+        "lib": ["ES2021"],
         "typeRoots": [
             "./node_modules/@types"
         ]

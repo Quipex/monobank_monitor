@@ -1,6 +1,7 @@
-import { currency, toPrice } from '@utils/money.helper';
-import { getCardName } from '@utils/names.helper';
-import { Account } from '../model/Account';
+import { currency, toPrice } from '#utils/money.helper.js';
+import { getCardName } from '#utils/names.helper.js';
+
+import { Account } from '../model/Account.js';
 
 
 export const accountToString = ({ id, balance, currencyCode, type }: Account) => (

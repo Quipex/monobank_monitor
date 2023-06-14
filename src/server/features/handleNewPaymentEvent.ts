@@ -1,11 +1,12 @@
-import { isEventRestricted } from '@monobank/helpers/isEventRestricted';
-import { eventToString, restrictedEventToString } from '@monobank/mappers/webhookEvent';
-import { WebhookEvent } from '@monobank/model/WebhookEvent';
-import * as ExpensesRepository from '@persistence/expenses/actions';
-import { sendMessage, sendRestrictedMessage } from '@telegram/bot';
-import FixedLengthArray from '@utils/fixed-length-array';
-import { RequestHandler } from 'express-serve-static-core';
+import { RequestHandler } from 'express';
 import pRetry from 'p-retry';
+
+import { isEventRestricted } from '#monobank/helpers/isEventRestricted.js';
+import { eventToString, restrictedEventToString } from '#monobank/mappers/webhookEvent.js';
+import { WebhookEvent } from '#monobank/model/WebhookEvent.js';
+import * as ExpensesRepository from '#persistence/expenses/actions.js';
+import { sendMessage, sendRestrictedMessage } from '#telegram/features/sendMessage.js';
+import FixedLengthArray from '#utils/fixed-length-array.js';
 
 const lastEventIds = new FixedLengthArray<string>(10);
 
@@ -34,7 +35,7 @@ const handleNewPaymentEvent: RequestHandler = async (req, res) => {
     const expense = { ...webhook.data.statementItem, account: webhook.data.account };
     try {
         await pRetry(() => ExpensesRepository.saveExpenses(expense as any), { retries: DB_WRITE_RETRIES });
-    } catch (e) {
+    } catch (e: any) {
         sendMessage(`Failed to save into DB after ${DB_WRITE_RETRIES} retries 😢\n`
             + `Error: ${e.message}\nData: ${JSON.stringify(expense)}`);
     }

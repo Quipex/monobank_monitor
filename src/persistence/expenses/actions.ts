@@ -1,5 +1,5 @@
-import { Statement } from '@monobank/model/Statement';
-import { knexConnection } from '@configuration/database';
+import { knexConnection } from '#configuration/database.js';
+import { Statement } from '#monobank/model/Statement.js';
 
 const TABLE = 'EXPENSES';
 

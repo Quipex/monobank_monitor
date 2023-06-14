@@ -1,5 +1,6 @@
-import { UserInfo } from '../model/UserInfo';
-import { accountToString } from './account';
+import { accountToString } from './account.js';
+
+import { UserInfo } from '../model/UserInfo.js';
 
 export const infoToString = ({ id, name, webHookUrl, accounts }: UserInfo) => {
     let message = id !== undefined
