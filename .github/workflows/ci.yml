@@ -19,7 +19,10 @@ jobs:
                     node-version: 16
 
             -   name: Bump app version
-                run: yarn version --patch
+                run: |
+                    git config user.name "${{ github.actor }}"
+                    git config user.email "${{ github.actor }}@users.noreply.github.com"
+                    yarn version --patch
 
             -   name: Install dependencies
                 run: yarn install
