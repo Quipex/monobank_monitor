@@ -5,6 +5,7 @@ extends:
     - plugin:import/typescript
     - plugin:@typescript-eslint/recommended
     - plugin:require-extensions/recommended
+    - prettier
 parser: "@typescript-eslint/parser"
 plugins:
     - "@typescript-eslint"

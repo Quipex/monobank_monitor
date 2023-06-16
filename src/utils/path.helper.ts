@@ -1,21 +1,12 @@
-import { join } from 'path';
-
-export function getOsEnv(key: string): string {
-    return process.env[key] as string;
+function getOsEnv(key: string): string {
+    return process.env[key] ?? '';
 }
 
-export function getPath(path: string): string {
-    return join(process.cwd(), path);
-}
-
-export function getPaths(paths: string[]): string[] {
-    return paths.map(p => getPath(p));
-}
-
-export function getOsEnvArray(key: string, delimiter = ','): string[] {
+function getOsEnvArray(key: string, delimiter = ','): string[] {
     return (process.env[key] && process.env[key].split(delimiter)) || [];
 }
 
-export function getOsPaths(key: string): string[] {
-    return getPaths(getOsEnvArray(key));
-}
+export {
+    getOsEnv,
+    getOsEnvArray
+};

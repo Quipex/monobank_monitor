@@ -19,7 +19,7 @@ export function clientInfo(cardIndex?: string): AxiosPromise<UserInfo> {
 }
 
 export function searchStatement(from: string, to?: string, cardIndex?: string): AxiosPromise<Statement[]> {
-    const _from = toUnixTime(from);
-    const _to = to ? toUnixTime(to) : '';
+    const _from = toUnixTime(from).toString();
+    const _to = to ? toUnixTime(to).toString() : '';
     return _call(ENDPOINTS.PERSONAL_STATEMENT(env.app.monobank_cards[+cardIndex - 1], _from, _to), cardIndex);
 }

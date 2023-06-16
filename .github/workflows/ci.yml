@@ -24,6 +24,12 @@ jobs:
             -   name: Build project
                 run: yarn build
 
+            -   name: Run unit tests
+                run: yarn test unit
+
+            -   name: Run integration tests
+                run: yarn test int
+
             -   name: Bump app version
                 run: |
                     git config user.name "${{ github.actor }}"

@@ -1,5 +1,13 @@
 import { readFileSync } from 'node:fs';
 
-const parsedPackage = JSON.parse(readFileSync('./package.json', { encoding: 'utf-8' }));
+let packageJsonContent: any;
+const getPackage = () => {
+    if (packageJsonContent) {
+        return packageJsonContent;
+    }
+    const packageString = readFileSync('./package.json', { encoding: 'utf-8' });
+    packageJsonContent = JSON.parse(packageString);
+    return packageJsonContent;
+};
 
-export default parsedPackage;
+export default getPackage;
