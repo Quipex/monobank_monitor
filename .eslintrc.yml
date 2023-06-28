@@ -5,11 +5,12 @@ extends:
     - plugin:import/typescript
     - plugin:@typescript-eslint/recommended
     - plugin:require-extensions/recommended
-    - prettier
+    - plugin:prettier/recommended
 parser: "@typescript-eslint/parser"
 plugins:
     - "@typescript-eslint"
     - require-extensions
+    - prettier
 settings:
     import/resolver:
         # You will also need to install and configure the TypeScript resolver
@@ -37,9 +38,6 @@ rules:
     no-eval: error
     no-implied-eval: error
     prefer-promise-reject-errors: warn
-    quotes:
-        - error
-        - single
     import/order:
         - error
         -   groups:
@@ -58,3 +56,4 @@ rules:
         - ignorePackages
         -   ts: never
     import/no-named-as-default-member: off
+    prettier/prettier: error

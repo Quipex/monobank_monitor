@@ -27,12 +27,11 @@ describe('Integration Tests', () => {
     it('POST /monobank should return 200 status code', async () => {
         const data = {
             data: {
-                account: '', statementItem: {}
+                account: '',
+                statementItem: {}
             }
         } as WebhookEvent;
-        const response = await request(app)
-            .post('/monobank')
-            .send(data);
+        const response = await request(app).post('/monobank').send(data);
         expect(response.status).toBe(200);
     });
 

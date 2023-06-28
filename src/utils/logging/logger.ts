@@ -1,6 +1,6 @@
 import { createLogger, format, transports } from 'winston';
 
-const enumerateErrorFormat = format((info) => {
+const enumerateErrorFormat = format(info => {
     if (info instanceof Error) {
         Object.assign(info, { message: info.stack });
     }
@@ -15,10 +15,7 @@ const commonFormats = [
 const logger = createLogger({
     transports: [
         new transports.Console({
-            format: format.combine(
-                format.colorize(),
-                ...commonFormats
-            )
+            format: format.combine(format.colorize(), ...commonFormats)
         }),
         new transports.File({
             format: format.combine(...commonFormats),

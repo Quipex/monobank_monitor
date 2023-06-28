@@ -9,5 +9,6 @@ WORKDIR /app
 
 COPY node_modules /app/node_modules
 COPY dist /app/dist
+COPY package.json /app/package.json
 
 CMD ["node", "/app/dist/index.js"]

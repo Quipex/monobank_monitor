@@ -7,4 +7,4 @@ import getPackage from '#utils/package.helper.js';
 logger.info(`App version: ${getPackage().version}`);
 moment.locale('ru');
 moment.tz.setDefault('Europe/Kiev');
-launchServer();
+await launchServer();

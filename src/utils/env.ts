@@ -33,7 +33,7 @@ const env: EnvConfig = {
         telegram_restricted_view_ids: getOsEnvArray('APP_TELEGRAM_RESTRICTED_VIEW_IDS'),
         database_conn_string: getOsEnv('APP_DB_CONN_STRING'),
         database_username: getOsEnv('APP_DB_USERNAME'),
-        database_password: getOsEnv('APP_DB_PASSWORD'),
+        database_password: getOsEnv('APP_DB_PASSWORD')
     }
 };
 

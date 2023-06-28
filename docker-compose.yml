@@ -1,0 +1,9 @@
+version: '3'
+services:
+    monobot:
+        image: quipex/monobot:latest
+        container_name: monobot
+        ports:
+            - "${APP_PORT}:${APP_PORT}"
+        env_file:
+            - ./.env

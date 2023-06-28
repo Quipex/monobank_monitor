@@ -8,7 +8,8 @@
         "test": "vitest",
         "build": "tsc && tsc-alias && cp package.json ./dist/package.json",
         "build:dev": "rm -rf ./dist && yarn build",
-        "lint": "eslint ."
+        "lint": "eslint .",
+        "prepare": "husky install"
     },
     "exports": "./index.js",
     "engines": {
@@ -45,7 +46,10 @@
         "eslint-config-prettier": "^8.8.0",
         "eslint-import-resolver-typescript": "^3.5.5",
         "eslint-plugin-import": "^2.27.5",
+        "eslint-plugin-prettier": "^4.2.1",
         "eslint-plugin-require-extensions": "^0.1.3",
+        "husky": "^8.0.3",
+        "lint-staged": "^13.2.3",
         "nodemon": "^2.0.22",
         "prettier": "2.8.8",
         "supertest": "^6.3.3",
@@ -54,5 +58,9 @@
         "typescript": "^4.9.5",
         "vite-tsconfig-paths": "^4.2.0",
         "vitest": "^0.32.2"
+    },
+    "lint-staged": {
+        "*.ts": "yarn eslint --fix",
+        "*.js": "yarn eslint --fix"
     }
 }

@@ -18,5 +18,7 @@ enum CardType {
 }
 
 enum CashbackType {
-    None, UAH, Miles
+    None,
+    UAH,
+    Miles
 }

@@ -15,7 +15,6 @@ describe('getOsEnv', () => {
     });
 });
 
-
 describe('getOsEnvArray', () => {
     it('should return an array of environment variable values split by the delimiter', () => {
         process.env.TEST_ENV_VAR = 'value1,value2,value3';

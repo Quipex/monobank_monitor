@@ -6,7 +6,7 @@ const botMock = vi.fn(bot);
 
 botMock.mockReturnValue({
     telegram: {
-        sendMessage: vi.fn(),
+        sendMessage: vi.fn()
     }
 } as any);
 
