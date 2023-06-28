@@ -11,8 +11,8 @@ vi.mock('../../src/telegram/bot.js');
 
 describe('Integration Tests', () => {
     let server;
-    beforeAll(() => {
-        server = launchServer();
+    beforeAll(async () => {
+        server = await launchServer();
     });
 
     afterAll(() => {
