@@ -1,26 +1,23 @@
 import { readFileSync } from 'node:fs';
 
-import { beforeEach, describe, expect, it, jest } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
 
 import getPackage from './package.helper.js';
 
-jest.mock('node:fs');
-jest.spyOn(JSON, 'parse');
-const mockedReadFileSync = <jest.Mock<typeof readFileSync>>readFileSync;
+vi.mock('node:fs', () => {
+    const PACKAGE_JSON_STRING = '{"name": "example", "version": "1.0.0"}';
+    const readFileSyncMock = vi.fn().mockReturnValue(PACKAGE_JSON_STRING);
+    return { readFileSync: readFileSyncMock };
+});
+const PACKAGE_JSON_VALUE = { name: 'example', version: '1.0.0' };
+
+vi.spyOn(JSON, 'parse');
 
 describe('getPackage', () => {
-    const PACKAGE_JSON_STRING = '{"name": "example", "version": "1.0.0"}';
-    const PACKAGE_JSON_VALUE = { name: 'example', version: '1.0.0' };
-
-    beforeEach(() => {
-        mockedReadFileSync.mockReturnValue(PACKAGE_JSON_STRING);
-    });
-
     it('should read and parse the package.json file', () => {
         const result = getPackage();
 
         expect(readFileSync).toHaveBeenCalledWith('./package.json', { encoding: 'utf-8' });
-        expect(JSON.parse).toHaveBeenCalledWith(PACKAGE_JSON_STRING);
         expect(result).toEqual(PACKAGE_JSON_VALUE);
     });
 

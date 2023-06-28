@@ -1,3 +1,5 @@
+import { Server } from 'node:http';
+
 import bodyParser from 'body-parser';
 import express from 'express';
 
@@ -10,17 +12,22 @@ import { handleNewPaymentEvent } from './features/handleNewPaymentEvent.js';
 
 const app = express();
 
+let appServer: Server;
+
 const launchServer = () => {
-    app.use(bodyParser.json());
-    app.use(successHandler);
-    app.use(errorHandler);
+    if (!appServer) {
+        app.use(bodyParser.json());
+        app.use(successHandler);
+        app.use(errorHandler);
 
-    app.get('/monobank', answerToMonobankGet);
-    app.post('/monobank', handleNewPaymentEvent);
+        app.get('/monobank', answerToMonobankGet);
+        app.post('/monobank', handleNewPaymentEvent);
 
-    app.listen(env.app.port, () => {
-        logger.info(`App is listening on port ${env.app.port}`);
-    });
+        appServer = app.listen(env.app.port, () => {
+            logger.info(`App is listening on port ${env.app.port}`);
+        });
+    }
+    return appServer;
 };
 
 export { app, launchServer };

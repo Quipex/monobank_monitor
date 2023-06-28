@@ -6,7 +6,7 @@ import env from '#utils/env.js';
 function _logAndSendMessage(message: string) {
     return function (chat_id: string) {
         logger.info(`bot -> '${chat_id}':\n${message}`);
-        bot.telegram.sendMessage(chat_id, message);
+        bot().telegram.sendMessage(chat_id, message);
     };
 }
 

@@ -28,8 +28,8 @@
             "#monobank/*": ["src/monobank/*"],
             "#server/*": ["src/server/*"],
             "#persistence/*": ["src/persistence/*"],
-            "#telegram/*": ["./src/telegram/*"],
-            "#utils/*": ["./src/utils/*"]
+            "#telegram/*": ["src/telegram/*"],
+            "#utils/*": ["src/utils/*"]
         },
         "types": [
             "node"

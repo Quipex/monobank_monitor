@@ -37,4 +37,6 @@ const env: EnvConfig = {
     }
 };
 
+export type { EnvConfig };
+
 export default env;
