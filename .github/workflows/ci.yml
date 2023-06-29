@@ -29,19 +29,3 @@ jobs:
 
             -   name: Run integration tests
                 run: yarn test int
-
-    bump-version:
-        if: ${{ github.ref == 'refs/heads/master' }}
-        needs: build-n-test
-        runs-on: ubuntu-latest
-
-        steps:
-            -   name: Checkout repository
-                uses: actions/checkout@v2
-
-            -   name: Bump app version
-                run: |
-                    git config user.name "${{ github.actor }}"
-                    git config user.email "${{ github.actor }}@users.noreply.github.com"
-                    yarn version --patch
-                    git push --follow-tags

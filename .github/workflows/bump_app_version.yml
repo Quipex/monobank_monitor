@@ -1,0 +1,39 @@
+name: Bump App Version
+
+on:
+    workflow_dispatch:
+        workflows:
+            - CI
+        types:
+            - completed
+        branches:
+            - master
+        inputs:
+            majority:
+                description: 'Version majority'
+                required: true
+                default: patch
+                type: choice
+                options:
+                    - patch
+                    - minor
+                    - major
+
+env:
+    GITHUB_TOKEN: ${{ secrets.REPO_PAT }}
+
+jobs:
+    bump-version:
+        needs: build-n-test
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Checkout repository
+                uses: actions/checkout@v2
+
+            -   name: Bump app version
+                run: |
+                    git config user.name "${{ github.actor }}"
+                    git config user.email "${{ github.actor }}@users.noreply.github.com"
+                    yarn version --${{ inputs.majority }}
+                    git push --follow-tags
