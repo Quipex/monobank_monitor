@@ -14,13 +14,6 @@ on:
                     - patch
                     - minor
                     - major
-            refToBuild:
-                description: 'Branch, tag or commit SHA1 to build'
-                required: true
-                type: string
-
-env:
-    GITHUB_TOKEN: ${{ secrets.REPO_PAT }}
 
 jobs:
     bump-version:
@@ -33,6 +26,8 @@ jobs:
                     ref: ${{ inputs.refToBuild }}
 
             -   name: Bump app version
+                env:
+                    GITHUB_TOKEN: ${{ secrets.REPO_PAT }}
                 run: |
                     git config user.name "${{ github.actor }}"
                     git config user.email "${{ github.actor }}@users.noreply.github.com"
